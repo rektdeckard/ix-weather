@@ -12,7 +12,7 @@ Read about the following MetaWeather API here https://www.metaweather.com/api/
 - Obtain the device’s GPS coordinates, if available, and pass them to the service.
 (https://www.metaweather.com/api/location/search/?lattlong=(latt),(long))
 - If coordinates are not available, pass user entered keyword/location name
-(https://www.metaweather.com /api/location/search/?query=(query))
+(https://www.metaweather.com/api/location/search/?query=(query))
 - Presently store all the search keyworks/location with a time stamp so that when the
 user can see search history in the future
 - In a list, display each location id, title and type
