@@ -17,7 +17,7 @@ Read about the following MetaWeather API here https://www.metaweather.com/api/
 user can see search history in the future
 - In a list, display each location id, title and type
 - On selecting a location from the list, open another page which would show weather
-details for next 5 days (https://www.metaweather.com/ /api/location/(woeid))
+details for next 5 days (https://www.metaweather.com/api/location/(woeid))
 
 In order to prevent you from running down rabbit holes that are less important to us, try to
 prioritize the following:
