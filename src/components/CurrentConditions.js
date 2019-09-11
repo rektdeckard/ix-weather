@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import { getImageUri } from '../api/metaWeather';
+import { getImageUri } from '../api/MetaWeather';
 
 const CurrentConditions = ({ conditions }) => {
   return (
@@ -8,7 +8,7 @@ const CurrentConditions = ({ conditions }) => {
       <View style={styles.panes}>
         {/* <Text>{conditions.weather_state_name}</Text> */}
         <View style={styles.leftPane}>
-          <Text style={{ fontSize: 48, fontWeight: "bold" }}>
+          <Text style={{ fontSize: 60, fontWeight: "bold" }}>
             {Math.round(conditions.the_temp)}°C
           </Text>
           <Text>HIGH {Math.round(conditions.max_temp)}°C / LOW {Math.round(conditions.min_temp)}°C</Text>
@@ -21,10 +21,12 @@ const CurrentConditions = ({ conditions }) => {
           <Text>{conditions.weather_state_name}</Text>
         </View>
       </View>
-      <Text>Air Pressure: {Math.round(conditions.air_pressure)} mBar</Text>
-      <Text>Humidity: {conditions.humidity}%</Text>
-      <Text>Visibility: {Math.round(conditions.visibility)}%</Text>
-      <Text>Wind Speed: {Math.round(conditions.wind_speed)} km/h {conditions.wind_direction_compass}</Text>
+      <View style={styles.additionalInfo}>
+        <Text>Air Pressure: {Math.round(conditions.air_pressure)} mBar</Text>
+        <Text>Humidity: {conditions.humidity}%</Text>
+        <Text>Visibility: {Math.round(conditions.visibility)}%</Text>
+        <Text>Wind Speed: {Math.round(conditions.wind_speed)} km/h {conditions.wind_direction_compass}</Text>
+      </View>
     </View>
   );
 };
@@ -34,7 +36,8 @@ const styles = StyleSheet.create({
     margin: 16
   },
   panes: {
-    flexDirection: "row"
+    flexDirection: "row",
+    marginBottom: 16
   },
   leftPane: {
     flex: 1,
@@ -45,6 +48,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
+  },
+  additionalInfo: {
+    marginBottom: 16
   }
 });
 

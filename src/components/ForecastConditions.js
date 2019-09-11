@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, FlatList, StyleSheet } from "react-native";
-import metaWeather from "../api/metaWeather";
+import { getImageUri } from "../api/MetaWeather";
 import moment from 'moment';
 // import Moment from 'react-moment';
 
@@ -23,7 +23,7 @@ const ForecastConditions = ({ conditions }) => {
               <Image
                 style={{ height: 64, width: 64 }}
                 source={{
-                  uri: `https://www.metaweather.com/static/img/weather/png/${item.weather_state_abbr}.png`
+                  uri: getImageUri(item.weather_state_abbr)
                 }}
               />
               <Text style={{ fontWeight: "bold" }}>

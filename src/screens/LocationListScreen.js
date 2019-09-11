@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   FlatList
 } from "react-native";
@@ -13,6 +12,29 @@ import useResults from "../hooks/useResults";
 const LocationListScreen = ({ navigation }) => {
   const [query, SetQuery] = useState("");
   const [searchApi, results, error] = useResults();
+
+  if (!results) {
+    return (
+      <View style={styles.container}>
+        <Progress.Bar
+          style={styles.progress}
+          indeterminate={true}
+          useNativeDriver={true}
+          color={'gray'}
+          height={8}
+          width={256}
+        />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
 
   const renderItem = ({ item }) => {
     return (
@@ -34,6 +56,12 @@ const LocationListScreen = ({ navigation }) => {
         onTermChange={SetQuery}
         onTermSubmit={() => searchApi(query)}
       />
+      { error &&
+        <View style={styles.container}>
+          <Text>{error}</Text>
+        </View>
+      }
+      })}
       <FlatList
         data={results}
         keyExtractor={result => result.woeid.toString()}
@@ -45,6 +73,11 @@ const LocationListScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
   flatlist: {
     alignItems: "flex-start",
     padding: 16

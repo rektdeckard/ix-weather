@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
-import metaWeather from '../api/metaWeather';
+import { View, StyleSheet } from 'react-native';
+import * as Progress from 'react-native-progress';
+import MetaWeather from '../api/MetaWeather';
 import CurrentConditions from '../components/CurrentConditions';
 import ForecastConditions from '../components/ForecastConditions';
 
@@ -10,7 +11,7 @@ const DetailScreen = ({ navigation }) => {
   const [result, setResult] = useState(null);
 
   const getResult = async id => {
-    const response = await metaWeather.get(`/api/location/${id}`);
+    const response = await MetaWeather.get(`/api/location/${id}`);
     setResult(response.data);
   };
 
@@ -19,7 +20,18 @@ const DetailScreen = ({ navigation }) => {
   }, []);
 
   if (!result) {
-    return null;
+    return (
+      <View style={styles.container}>
+        <Progress.Bar
+          style={styles.progress}
+          indeterminate={true}
+          useNativeDriver={true}
+          color={'gray'}
+          height={8}
+          width={256}
+        />
+      </View>
+    );
   }
 
   return (
@@ -35,7 +47,14 @@ DetailScreen.navigationOptions = ({ navigation }) => ({
 });
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  progress: {
+    
+  }
 });
 
 export default DetailScreen;
