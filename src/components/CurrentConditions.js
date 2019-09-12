@@ -33,7 +33,7 @@ const CurrentConditions = ({ conditions }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 16,
+    margin: 24,
   },
   panes: {
     flexDirection: "row",

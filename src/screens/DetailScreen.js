@@ -54,7 +54,8 @@ const DetailScreen = ({ navigation }) => {
     <ScrollView>
       <View style={styles.container}>
         <CurrentConditions conditions={result.consolidated_weather[0]} />
-        <ForecastConditions conditions={result} />
+        {/* <View style={{ height: 1, width: 400, backgroundColor: 'gray'}} /> */}
+        <ForecastConditions conditions={result.consolidated_weather} />
       </View>
     </ScrollView>
   );

@@ -5,33 +5,38 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 /**
  * SearchBar component for the LocationListScreen
- * takes a {string} @param term for the search term, and lambdas @param onTermChange and @param onTermSubmit
+ * takes a {string} @param term for the search term, and callbacks @param onTermChange and @param onTermSubmit
  */
 const SearchBar = ({ term, onTermChange, onTermSubmit }) => {
   return (
     <View style={styles.backgroundStyle}>
-      <Feather name="search" style={styles.iconStyle} />
-      <TextInput
-        style={styles.inputStyle}
-        placeholder="Search"
-        autoCorrect={false}
-        value={term}
-        onChangeText={onTermChange}
-        onSubmitEditing={onTermSubmit}
-      />
-      <TouchableOpacity
-        style={{ alignItems: "center", justifyContent: "center" }}
-        onPress={() => onTermChange("")}
-      >
-        <Feather name="x" style={styles.iconStyle} />
-      </TouchableOpacity>  
+      <View style={styles.barStyle}>
+        <Feather name="search" style={styles.iconStyle} />
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Search"
+          autoCorrect={false}
+          value={term}
+          onChangeText={onTermChange}
+          onSubmitEditing={onTermSubmit}
+        />
+        <TouchableOpacity
+          style={{ alignItems: "center", justifyContent: "center" }}
+          onPress={() => onTermChange("")}
+        >
+          <Feather name="x" style={styles.iconStyle} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   backgroundStyle: {
-    backgroundColor: "#F0EEEEEE",
+    backgroundColor: "#F0EEEEEE"
+  },
+  barStyle: {
+    backgroundColor: "white",
     height: 48,
     borderRadius: 8,
     marginVertical: 10,
@@ -47,7 +52,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     alignSelf: "center",
     marginHorizontal: 16
-  },
+  }
 });
 
 export default SearchBar;

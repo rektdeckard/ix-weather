@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList
-} from "react-native";
-import SearchBar from '../components/SearchBar';
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import SearchBar from "../components/SearchBar";
 import useResults from "../hooks/useResults";
+import ListItem from "../components/ListItem";
 
 /**
  * Landing Screen that lists nearby cities or cities by user query
@@ -24,27 +19,13 @@ const LocationListScreen = ({ navigation }) => {
           style={styles.progress}
           indeterminate={true}
           useNativeDriver={true}
-          color={'gray'}
+          color={"gray"}
           height={8}
           width={256}
         />
       </View>
     );
   }
-
-  const renderItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        style={styles.listitem}
-        // Pass the location title and ID as params to the DetailScreen via the StackNavigator
-        onPress={() => navigation.navigate("Detail", { title: item.title, id: item.woeid })}
-      >
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>{item.title}</Text>
-        <Text style={{ fontSize: 14 }}>{item.location_type}</Text>
-        <Text style={{ fontSize: 14 }}>{"id: " + item.woeid}</Text>
-      </TouchableOpacity>
-    );
-  };
 
   return (
     <>
@@ -53,19 +34,22 @@ const LocationListScreen = ({ navigation }) => {
         onTermChange={SetQuery}
         onTermSubmit={() => searchApi(query)}
       />
-      { error ?
+      {error ? (
         <View style={styles.container}>
           <Text>{error}</Text>
-        </View> : 
+        </View>
+      ) : (
         <FlatList
           data={results}
           keyExtractor={result => result.woeid.toString()}
-          // contentContainerStyle={styles.flatlist}
-          renderItem={renderItem}
           refreshing={false}
           onRefresh={() => searchApi(query)}
+          // contentContainerStyle={styles.flatlist}
+          renderItem={({ item }) => {
+            return <ListItem item={item} />;
+          }}
         />
-      }
+      )}
     </>
   );
 };
@@ -79,13 +63,6 @@ const styles = StyleSheet.create({
   flatlist: {
     alignItems: "flex-start",
     padding: 16
-  },
-  listitem: {
-    alignItems: "flex-start",
-    justifyContent: "center",
-    paddingStart: 16,
-    paddingBottom: 16
-
   }
 });
 
