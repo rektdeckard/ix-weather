@@ -4,6 +4,7 @@ import * as Progress from 'react-native-progress';
 import MetaWeather from '../api/MetaWeather';
 import CurrentConditions from '../components/CurrentConditions';
 import ForecastConditions from '../components/ForecastConditions';
+import { ScrollView } from 'react-native-gesture-handler';
 
 /**
  * Detail screen for current and forecasted weather of a city
@@ -29,9 +30,8 @@ const DetailScreen = ({ navigation }) => {
 
   if (!result) {
     return (
-      <View style={styles.container}>
+      <View style={styles.progress}>
         <Progress.Bar
-          style={styles.progress}
           indeterminate={true}
           useNativeDriver={true}
           color={'gray'}
@@ -51,10 +51,12 @@ const DetailScreen = ({ navigation }) => {
   }
 
   return (
-    <View>
-      <CurrentConditions conditions={result.consolidated_weather[0]} />
-      <ForecastConditions conditions={result.consolidated_weather} />
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <CurrentConditions conditions={result.consolidated_weather[0]} />
+        <ForecastConditions conditions={result} />
+      </View>
+    </ScrollView>
   );
 };
 
@@ -67,12 +69,11 @@ DetailScreen.navigationOptions = ({ navigation }) => ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
   },
   progress: {
-    
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   }
 });
 

@@ -6,7 +6,6 @@ const CurrentConditions = ({ conditions }) => {
   return (
     <View style={styles.container}>
       <View style={styles.panes}>
-        {/* <Text>{conditions.weather_state_name}</Text> */}
         <View style={styles.leftPane}>
           <Text style={{ fontSize: 60, fontWeight: "bold" }}>
             {Math.round(conditions.the_temp)}°C
@@ -22,10 +21,11 @@ const CurrentConditions = ({ conditions }) => {
         </View>
       </View>
       <View style={styles.additionalInfo}>
-        <Text>Air Pressure: {Math.round(conditions.air_pressure)} mBar</Text>
+        <Text>Barometric Pressure: {Math.round(conditions.air_pressure)} mbar</Text>
         <Text>Humidity: {conditions.humidity}%</Text>
-        <Text>Visibility: {Math.round(conditions.visibility)}%</Text>
-        <Text>Wind Speed: {Math.round(conditions.wind_speed)} km/h {conditions.wind_direction_compass}</Text>
+        <Text>Visibility: {conditions.visibility.toFixed(1)} mi</Text>
+        <Text>Wind Speed: {conditions.wind_speed.toFixed(1)} mph {conditions.wind_direction_compass}</Text>
+        <Text>Predictability: {conditions.predictability} %</Text>
       </View>
     </View>
   );
@@ -33,7 +33,7 @@ const CurrentConditions = ({ conditions }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 16
+    margin: 16,
   },
   panes: {
     flexDirection: "row",

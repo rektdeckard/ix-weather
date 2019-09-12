@@ -1,7 +1,9 @@
-import React from "react";
-import { View, Text, Image, FlatList, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Text, Image, FlatList, StyleSheet } from "react-native";
+import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
 import { getImageUri } from "../api/MetaWeather";
 import moment from 'moment';
+import ForecastChart from "./ForecastChart";
 
 const ForecastConditions = ({ conditions }) => {
   return (
@@ -9,15 +11,16 @@ const ForecastConditions = ({ conditions }) => {
       <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        data={conditions}
+        data={conditions.consolidated_weather}
         keyExtractor={item => item.id.toString()}
-        contentContainerStyle={{ paddingEnd: 16 }}
+        contentContainerStyle={{ paddingStart: 8, paddingEnd: 16 }}
         renderItem={({ item, index }) => {
           return (
-            <View style={styles.forecastItem}>
+            <TouchableOpacity style={styles.forecastItem}
+              onPress={() => console.log(item.applicable_date)}>
               { index == 0 ? <Text>Today</Text>
                 : index == 1 ? <Text>Tomorrow</Text>
-                : <Text>{moment(item.applicable_date).format('ddd')}</Text>
+                : <Text>{moment(item.applicable_date).format('ddd')} {moment(item.applicable_date).format('D')}</Text>
               }
               <Image
                 style={{ height: 64, width: 64 }}
@@ -28,18 +31,22 @@ const ForecastConditions = ({ conditions }) => {
               <Text style={{ fontWeight: "bold" }}>
                 {Math.round(item.the_temp)}°C
               </Text>
-            </View>
+            </TouchableOpacity>
           );
         }}
       />
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ForecastChart conditions={conditions.consolidated_weather} />
+      </ScrollView>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   forecastItem: {
-    marginLeft: 16,
-    alignItems: 'center'
+    marginLeft: 8,
+    padding: 16,
+    alignItems: 'center',
   }
 });
 
