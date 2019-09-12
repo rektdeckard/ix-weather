@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, SectionList } from "react-native";
 import SearchBar from "../components/SearchBar";
 import useResults from "../hooks/useResults";
 import ListItem from "../components/ListItem";
@@ -7,7 +7,7 @@ import ListItem from "../components/ListItem";
 /**
  * Landing Screen that lists nearby cities or cities by user query
  */
-const LocationListScreen = ({ navigation }) => {
+const LocationListScreen = () => {
   const [query, SetQuery] = useState("");
   const [searchApi, results, error] = useResults();
 
@@ -39,7 +39,26 @@ const LocationListScreen = ({ navigation }) => {
           <Text>{error}</Text>
         </View>
       ) : (
-        <FlatList
+        <SectionList
+          sections={[
+            {title: 'Locations', data: results},
+          ]}
+          keyExtractor={result => result.woeid.toString()}
+          stickySectionHeadersEnabled={true}
+          stickyHeaderIndices={[0]}
+          refreshing={false}
+          onRefresh={() => searchApi(query)}
+          // contentContainerStyle={styles.flatlist}
+          renderItem={({ item, index }) => {
+            return <ListItem key={index} item={item} />;
+          }}
+          renderSectionHeader={({section: {title}}) => (
+            <View style={styles.header}>
+             <Text style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>{title}</Text>
+            </View>
+          )}
+        />
+        /* <FlatList
           data={results}
           keyExtractor={result => result.woeid.toString()}
           refreshing={false}
@@ -48,7 +67,7 @@ const LocationListScreen = ({ navigation }) => {
           renderItem={({ item }) => {
             return <ListItem item={item} />;
           }}
-        />
+        /> */
       )}
     </>
   );
@@ -63,6 +82,11 @@ const styles = StyleSheet.create({
   flatlist: {
     alignItems: "flex-start",
     padding: 16
+  },
+  header: {
+    backgroundColor: 'lightgray',
+    paddingHorizontal: 16,
+    paddingVertical: 8
   }
 });
 

@@ -16,9 +16,9 @@ const ForecastConditions = ({ conditions }) => {
       return `${moment(condition.applicable_date).format('ddd')} ${moment(condition.applicable_date).format('D')}`;
     }),
     datasets: [
-      { data: conditions.map(condition => condition.max_temp) },
-      { data: conditions.map(condition => condition.the_temp) },
-      { data: conditions.map(condition => condition.min_temp) }
+      { data: conditions.map(condition => condition.max_temp), color: () => '#C88C32' },
+      { data: conditions.map(condition => condition.the_temp), color: () => '#BEBDBD' },
+      { data: conditions.map(condition => condition.min_temp), color: () => '#00697D' }
     ]
   };
 
@@ -47,6 +47,7 @@ const ForecastConditions = ({ conditions }) => {
                     uri: getImageUri(condition.weather_state_abbr)
                   }}
                 />
+                {/* <SvgUri height="64" width="64" uri={getImageUri(conditions.weather_state_abbr)}/> */}
                 <Text style={{ fontWeight: "bold" }}>
                   {Math.round(condition.the_temp)}°C
                 </Text>
@@ -60,6 +61,7 @@ const ForecastConditions = ({ conditions }) => {
           bezier
           // withInnerLines={false}
           withOuterLines={false}
+          withShadow={false}
           // fromZero={true}
           height={200}
           width={700}

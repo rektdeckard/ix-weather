@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Linking } from 'react-native';
 import * as Progress from 'react-native-progress';
 import MetaWeather from '../api/MetaWeather';
 import CurrentConditions from '../components/CurrentConditions';
 import ForecastConditions from '../components/ForecastConditions';
-import { ScrollView } from 'react-native-gesture-handler';
 
 /**
  * Detail screen for current and forecasted weather of a city
@@ -56,6 +55,13 @@ const DetailScreen = ({ navigation }) => {
         <CurrentConditions conditions={result.consolidated_weather[0]} />
         {/* <View style={{ height: 1, width: 400, backgroundColor: 'gray'}} /> */}
         <ForecastConditions conditions={result.consolidated_weather} />
+        <View style={{ flexDirection: "row", justifyContent: "center", margin: 24 }}>
+          <Text style={{ fontSize: 10, color: 'gray' }}>Weather data provided by </Text>
+          <Text style={{fontSize: 10, color: '#00697D'}}
+            onPress={() => Linking.openURL('https://www.metaweather.com/')}>
+            MetaWeather
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );

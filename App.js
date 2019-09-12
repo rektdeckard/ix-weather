@@ -17,7 +17,7 @@ const navigator = createStackNavigator(
     defaultNavigationOptions: {
       title: "iX Weather",
       headerStyle: {
-        backgroundColor: 'rgb(0, 105, 125)',
+        backgroundColor: '#00697D',
       },
       headerTintColor: 'white',
     },

@@ -14,7 +14,7 @@ const SearchBar = ({ term, onTermChange, onTermSubmit }) => {
         <Feather name="search" style={styles.iconStyle} />
         <TextInput
           style={styles.inputStyle}
-          placeholder="Search"
+          placeholder="Search Locations"
           autoCorrect={false}
           value={term}
           onChangeText={onTermChange}
