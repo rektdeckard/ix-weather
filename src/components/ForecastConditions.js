@@ -8,7 +8,7 @@ import ForecastChart from "./ForecastChart";
 const ForecastConditions = ({ conditions }) => {
   return (
     <>
-      <FlatList
+      {/* <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         data={conditions.consolidated_weather}
@@ -34,10 +34,10 @@ const ForecastConditions = ({ conditions }) => {
             </TouchableOpacity>
           );
         }}
-      />
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      /> */}
+      {/* <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}> */}
         <ForecastChart conditions={conditions.consolidated_weather} />
-      </ScrollView>
+      {/* </ScrollView> */}
     </>
   );
 };
