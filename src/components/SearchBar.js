@@ -3,6 +3,10 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+/**
+ * SearchBar component for the LocationListScreen
+ * takes a {string} @param term for the search term, and lambdas @param onTermChange and @param onTermSubmit
+ */
 const SearchBar = ({ term, onTermChange, onTermSubmit }) => {
   return (
     <View style={styles.backgroundStyle}>

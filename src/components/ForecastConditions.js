@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, Image, FlatList, StyleSheet } from "react-native";
 import { getImageUri } from "../api/MetaWeather";
 import moment from 'moment';
-// import Moment from 'react-moment';
 
 const ForecastConditions = ({ conditions }) => {
   return (
