@@ -52,9 +52,9 @@ export default () => {
     }
   }
 
-  // AsyncStorage.clear();
-
+  
   useEffect(() => {
+    AsyncStorage.clear();
     getFavorites();
     getSearches();
   }, []);

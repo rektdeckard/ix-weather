@@ -1,7 +1,7 @@
 import React from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { View, TextInput, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import Autocomplete from 'react-native-autocomplete-input';
 
 /**
  * SearchBar component for the LocationListScreen
@@ -17,7 +17,7 @@ const SearchBar = ({ searches, term, onTermChange, onTermSubmit }) => {
           >
           <Feather name="search" style={styles.iconStyle} />
         </TouchableOpacity>
-        <TextInput
+        {/* <TextInput
           style={styles.inputStyle}
           returnKeyType="search"
           textContentType="addressCity"
@@ -26,6 +26,23 @@ const SearchBar = ({ searches, term, onTermChange, onTermSubmit }) => {
           value={term}
           onChangeText={onTermChange}
           onSubmitEditing={onTermSubmit}
+        /> */}
+        <Autocomplete 
+          data={searches}
+          // defaultValue={term}
+          // onChangeText={onTermChange}
+          placeholder={"Search Locations"}
+          // containerStyle={styles.inputStyle}
+          autoCorrect={false}
+          onSubmitEditing={onTermSubmit}
+          renderItem={({query, timestamp}) => {
+            <TouchableOpacity key= {timestamp} onPress={onTermSubmit(query)}>
+              <View style={{ flexDirection: 'row' }} >
+                <Text>{query}</Text>
+                <Text>{timestamp}</Text>
+              </View>
+            </TouchableOpacity>
+          }}
         />
         <TouchableOpacity
           style={{ alignItems: "center", justifyContent: "center" }}
