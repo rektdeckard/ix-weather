@@ -15,6 +15,7 @@ const DetailScreen = ({ navigation }) => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
 
+  // Fetch location weather data asynchronously using WOEID
   const getResult = async id => {
     try {
       const response = await MetaWeather.get(`/api/location/${id}`);
@@ -24,18 +25,19 @@ const DetailScreen = ({ navigation }) => {
     }
   };
 
-  // Fetch data once on mount, and only again if Connectivity Status changes
+  // Perform fetch once on mount, and only again if Connectivity Status changes
   useEffect(() => {
     getResult(id);
   }, [error]);
 
-  // On fetch error, display the error
+  // On error fetching data, display the error
   if (error) {
     return (
       <ErrorItem message={error} />
     );
   }
 
+  // While lodaing results, ProgressBar
   if (!result) {
     return (
       <View style={styles.progress}>

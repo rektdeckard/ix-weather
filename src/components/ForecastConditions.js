@@ -59,7 +59,6 @@ const ForecastConditions = ({ conditions }) => {
           data={data}
           chartConfig={chartConfig}
           bezier
-          // withInnerLines={false}
           withOuterLines={false}
           withShadow={false}
           // fromZero={true}

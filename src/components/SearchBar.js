@@ -11,7 +11,12 @@ const SearchBar = ({ term, onTermChange, onTermSubmit }) => {
   return (
     <View style={styles.backgroundStyle}>
       <View style={styles.barStyle}>
-        <Feather name="search" style={styles.iconStyle} />
+        <TouchableOpacity
+          style={{ alignItems: "center", justifyContent: "center" }}
+            onPress={() => onTermSubmit()}
+          >
+          <Feather name="search" style={styles.iconStyle} />
+        </TouchableOpacity>
         <TextInput
           style={styles.inputStyle}
           placeholder="Search Locations"

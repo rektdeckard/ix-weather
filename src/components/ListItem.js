@@ -2,11 +2,15 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { withNavigation } from "react-navigation";
 
+/**
+ * RenderItem 
+ * @param {location object} item  
+ */
 const ListItem = ({ item, navigation }) => {
   return (
     <TouchableOpacity
       style={styles.listitem}
-      // Pass the location title and ID as params to the DetailScreen via the StackNavigator
+      // On press, pass the location title and ID as params to the DetailScreen via the StackNavigator
       onPress={() => navigation.navigate("Detail", { title: item.title, id: item.woeid })}
     >
       <Text style={styles.title}>{item.title}</Text>
