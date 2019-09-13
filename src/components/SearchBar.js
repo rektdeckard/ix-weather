@@ -7,7 +7,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
  * SearchBar component for the LocationListScreen
  * takes a {string} @param term for the search term, and callbacks @param onTermChange and @param onTermSubmit
  */
-const SearchBar = ({ term, onTermChange, onTermSubmit }) => {
+const SearchBar = ({ searches, term, onTermChange, onTermSubmit }) => {
   return (
     <View style={styles.backgroundStyle}>
       <View style={styles.barStyle}>
@@ -19,6 +19,8 @@ const SearchBar = ({ term, onTermChange, onTermSubmit }) => {
         </TouchableOpacity>
         <TextInput
           style={styles.inputStyle}
+          returnKeyType="search"
+          textContentType="addressCity"
           placeholder="Search Locations"
           autoCorrect={false}
           value={term}

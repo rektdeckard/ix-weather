@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SectionList } from "react-native";
-import SearchBar from "../components/SearchBar";
 import useResults from "../hooks/useResults";
+import SearchBar from "../components/SearchBar";
 import ListItem from "../components/ListItem";
 import ErrorItem from "../components/ErrorItem";
+import useAsyncStore from "../hooks/useAsyncStore";
 
 /**
  * Landing Screen that lists nearby cities or cities by user query
@@ -12,14 +13,26 @@ const LocationListScreen = () => {
   // Use Hooks for stateful behavior of query string, favorites and result data
   const [query, SetQuery] = useState("");
   const [searchApi, results, error] = useResults();
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, storeFavorites, searches, storeSearches] = useAsyncStore();
+  
+  // useEffect(() => {
+  //   // THIS DUPLICATES THE STORAGE CONTENTS!
+  //   storeFavorites(favorites);
+  //   storeSearches(searches);
+  // }, [favorites, searches]);
+
+  console.log(`State at ${Date.now()}: ${JSON.stringify(searches)}`);
 
   return (
     <>
       <SearchBar
+        searches={searches}
         term={query}
         onTermChange={SetQuery}
-        onTermSubmit={() => searchApi(query)}
+        onTermSubmit={() => {
+          searchApi(query);
+          storeSearches(searches.push({ query, timestamp: Date.now() }));
+        }}
       />
       {/* If network request errors or returns no results, display error message. Else show data in a SectionList */}
       {error ? (
