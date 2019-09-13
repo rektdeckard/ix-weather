@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList, SectionList } from "react-native";
+import { StyleSheet, Text, View, SectionList } from "react-native";
 import SearchBar from "../components/SearchBar";
 import useResults from "../hooks/useResults";
 import ListItem from "../components/ListItem";
+import ErrorItem from "../components/ErrorItem";
 
 /**
  * Landing Screen that lists nearby cities or cities by user query
@@ -11,21 +12,9 @@ const LocationListScreen = () => {
   const [query, SetQuery] = useState("");
   const [searchApi, results, error] = useResults();
 
-  // Display ProgressBar while fetching results
-  if (!results) {
-    return (
-      <View style={styles.container}>
-        <Progress.Bar
-          style={styles.progress}
-          indeterminate={true}
-          useNativeDriver={true}
-          color={"gray"}
-          height={8}
-          width={256}
-        />
-      </View>
-    );
-  }
+  // If 
+  // The SectionList prop ListEmptyComponent will not display if the list contains header components
+
 
   return (
     <>
@@ -34,57 +23,44 @@ const LocationListScreen = () => {
         onTermChange={SetQuery}
         onTermSubmit={() => searchApi(query)}
       />
-      {error ? (
-        <View style={styles.container}>
-          <Text>{error}</Text>
-        </View>
-      ) : (
+      {error ? (<ErrorItem message={error} />) : 
+        (results.length < 1) ? (<ErrorItem message={"No results"} />) : (
         <SectionList
           sections={[
-            {title: 'Locations', data: results},
+            { title: "Favorites", data: results.slice(2, 4) },
+            { title: "Locations", data: results }
           ]}
           keyExtractor={result => result.woeid.toString()}
           stickySectionHeadersEnabled={true}
           stickyHeaderIndices={[0]}
           refreshing={false}
           onRefresh={() => searchApi(query)}
-          // contentContainerStyle={styles.flatlist}
           renderItem={({ item, index }) => {
             return <ListItem key={index} item={item} />;
           }}
-          renderSectionHeader={({section: {title}}) => (
+          renderSectionHeader={({ section: { title } }) => (
             <View style={styles.header}>
-             <Text style={{ fontWeight: 'bold', textTransform: 'uppercase' }}>{title}</Text>
+              <Text style={{ fontWeight: "bold", textTransform: "uppercase" }}>
+                {title}
+              </Text>
             </View>
           )}
-        />
-        /* <FlatList
-          data={results}
-          keyExtractor={result => result.woeid.toString()}
-          refreshing={false}
-          onRefresh={() => searchApi(query)}
-          // contentContainerStyle={styles.flatlist}
-          renderItem={({ item }) => {
-            return <ListItem item={item} />;
+          ItemSeparatorComponent={() => {
+            return <View style={{ height: 1, backgroundColor: "lightgray" }} />;
           }}
-        /> */
+        />
       )}
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
   flatlist: {
     alignItems: "flex-start",
     padding: 16
   },
   header: {
-    backgroundColor: 'lightgray',
+    backgroundColor: "lightgray",
     paddingHorizontal: 16,
     paddingVertical: 8
   }

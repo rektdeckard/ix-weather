@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { withNavigation } from "react-navigation";
 
 const ListItem = ({ item, navigation }) => {
@@ -9,9 +9,12 @@ const ListItem = ({ item, navigation }) => {
       // Pass the location title and ID as params to the DetailScreen via the StackNavigator
       onPress={() => navigation.navigate("Detail", { title: item.title, id: item.woeid })}
     >
-      <Text style={{ fontWeight: "bold", fontSize: 18 }}>{item.title}</Text>
-      <Text style={{ fontSize: 14 }}>{item.location_type}</Text>
-      <Text style={{ fontSize: 14 }}>{"id: " + item.woeid}</Text>
+      <Text style={styles.title}>{item.title}</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+        <Text style={styles.details}>{item.location_type}</Text>
+        <Text style={styles.details}>•</Text>
+        <Text style={styles.details}>{"id: " + item.woeid}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -22,7 +25,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingStart: 16,
     paddingVertical: 8
-
+  },
+  title: { 
+    fontWeight: "bold", 
+    fontSize: 18,
+  },
+  details: { 
+    fontSize: 14, 
+    textTransform: 'uppercase', 
+    color: 'gray',
+    marginEnd: 8 
   }
 });
 
