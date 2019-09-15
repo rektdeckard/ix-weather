@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, StyleSheet, Linking } from "react-native";
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import * as Progress from "react-native-progress";
 import MetaWeather from "../api/MetaWeather";
 import CurrentConditions from "../components/CurrentConditions";
 import ForecastConditions from "../components/ForecastConditions";
 import ErrorItem from "../components/ErrorItem";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 /**
  * Detail screen for current and forecasted weather of a city
@@ -74,10 +75,16 @@ const DetailScreen = ({ navigation }) => {
 };
 
 /**
- * Set the toolbar title to the name of the city, passed as navigation param
+ * Set the toolbar title to the name of the city, passed as navigation param.
+ * Add the 'Bookmark' button to the toolbar.
  */
 DetailScreen.navigationOptions = ({ navigation }) => ({
-  title: navigation.getParam("title")
+  title: navigation.getParam("title"),
+  headerRight: (
+    <TouchableOpacity style={{ padding: 16 }}>
+      <MaterialIcons name="bookmark-border" size={30} color='white' />
+    </TouchableOpacity>
+  )
 });
 
 const styles = StyleSheet.create({

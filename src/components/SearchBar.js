@@ -17,7 +17,7 @@ const SearchBar = ({ searches, term, onTermChange, onTermSubmit }) => {
           >
           <Feather name="search" style={styles.iconStyle} />
         </TouchableOpacity>
-        {/* <TextInput
+        <TextInput
           style={styles.inputStyle}
           returnKeyType="search"
           textContentType="addressCity"
@@ -26,8 +26,8 @@ const SearchBar = ({ searches, term, onTermChange, onTermSubmit }) => {
           value={term}
           onChangeText={onTermChange}
           onSubmitEditing={onTermSubmit}
-        /> */}
-        <Autocomplete 
+        />
+        {/* <Autocomplete 
           data={searches}
           // defaultValue={term}
           // onChangeText={onTermChange}
@@ -43,7 +43,7 @@ const SearchBar = ({ searches, term, onTermChange, onTermSubmit }) => {
               </View>
             </TouchableOpacity>
           }}
-        />
+        /> */}
         <TouchableOpacity
           style={{ alignItems: "center", justifyContent: "center" }}
           onPress={() => onTermChange("")}
