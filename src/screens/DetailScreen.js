@@ -63,8 +63,9 @@ const DetailScreen = ({ navigation }) => {
   // Perform fetch once on mount, and only again if Connectivity Status changes
   useEffect(() => {
     getResult(id);
-    addFavorite({ title: "New York", woeid: 2459115 });
-    getFavorite(id);
+    // For debugging Favorites feature
+    // addFavorite({ title: "New York", woeid: 2459115 });
+    // getFavorite(id);
   }, []);
 
   // On error fetching data, display the error
