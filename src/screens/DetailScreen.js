@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Linking } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Linking
+} from "react-native";
 import * as Progress from "react-native-progress";
 import MetaWeather from "../api/MetaWeather";
 import CurrentConditions from "../components/CurrentConditions";
 import ForecastConditions from "../components/ForecastConditions";
 import ErrorItem from "../components/ErrorItem";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Context } from "../context/FavoritesContext";
 
 /**
  * Detail screen for current and forecasted weather of a city
@@ -15,6 +23,8 @@ const DetailScreen = ({ navigation }) => {
   const id = navigation.getParam("id");
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [favorite, setFavorite] = useState(false);
+  const { state, addFavorite, deleteFavorite } = useContext(Context);
 
   // Fetch location weather data asynchronously using WOEID
   const getResult = async id => {
@@ -26,16 +36,40 @@ const DetailScreen = ({ navigation }) => {
     }
   };
 
+  // console.log(state);
+
+  const getFavorite = id => {
+    navigation.setParams({
+      toolbar: {
+        title: navigation.getParam("title"),
+        headerRight: (
+          <TouchableOpacity
+            style={{ padding: 16 }}
+            onPress={() => {
+              favorite ? deleteFavorite(id) : addFavorite(id);
+            }}
+          >
+            <Icon
+              name={favorite ? "bookmark" : "bookmark-border"}
+              size={30}
+              color="white"
+            />
+          </TouchableOpacity>
+        )
+      }
+    });
+  };
+
   // Perform fetch once on mount, and only again if Connectivity Status changes
   useEffect(() => {
     getResult(id);
-  }, [error]);
+    addFavorite({ title: "New York", woeid: 2459115 });
+    getFavorite(id);
+  }, []);
 
   // On error fetching data, display the error
   if (error) {
-    return (
-      <ErrorItem message={error} />
-    );
+    return <ErrorItem message={error} />;
   }
 
   // While lodaing results, ProgressBar
@@ -78,14 +112,19 @@ const DetailScreen = ({ navigation }) => {
  * Set the toolbar title to the name of the city, passed as navigation param.
  * Add the 'Bookmark' button to the toolbar.
  */
-DetailScreen.navigationOptions = ({ navigation }) => ({
-  title: navigation.getParam("title"),
-  headerRight: (
-    <TouchableOpacity style={{ padding: 16 }}>
-      <MaterialIcons name="bookmark-border" size={30} color='white' />
-    </TouchableOpacity>
-  )
-});
+DetailScreen.navigationOptions = ({ navigation }) => {
+  const toolbar = navigation.getParam("toolbar");
+  return (
+    toolbar || {
+      title: navigation.getParam("title"),
+      headerRight: (
+        <TouchableOpacity style={{ padding: 16 }}>
+          <Icon name="bookmark-border" size={30} color="white" />
+        </TouchableOpacity>
+      )
+    }
+  );
+};
 
 const styles = StyleSheet.create({
   progress: {

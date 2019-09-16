@@ -14,3 +14,10 @@ web-report/
 
 *.pdf
 .expo-shared/
+
+android/.gradle
+android/.idea
+*.iml
+android/app/build
+
+
