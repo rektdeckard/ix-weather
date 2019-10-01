@@ -1,11 +1,13 @@
-import createDataContext from "./createDataContext";
+import createDataContext from './createDataContext';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const favoritesReducer = (state, action) => {
   switch (action.type) {
-    case "get_favorites":
+    case 'get_favorites':
       return action.payload;
-    case "delete_favorite":
+    case 'add_favorite':
+      return [ ...state, action.payload ];
+    case 'delete_favorite':
       return state.filter(favorite => favorite.woeid !== action.payload);
     default:
       return state;
@@ -15,12 +17,12 @@ const favoritesReducer = (state, action) => {
 const getFavorites = dispatch => {
   return async () => {
     try {
-      const value = await AsyncStorage.getItem("@favoriteStore");
+      const value = await AsyncStorage.getItem('@favoriteStore');
       if (value !== null) {
         console.log(JSON.parse(value));
         dispatch({
-          type: "get_favorites",
-          payload: JSON.parse(value)
+          type: 'get_favorites',
+          payload: JSON.parse(value),
         });
       }
     } catch (e) {
@@ -29,13 +31,17 @@ const getFavorites = dispatch => {
   };
 };
 
-const addFavorite = () => {
+const addFavorite = dispatch => {
   return async (title, woeid, callback) => {
     try {
       await AsyncStorage.mergeItem(
-        "@favoriteStore",
-        JSON.stringify({title, woeid})
+        '@favoriteStore',
+        JSON.stringify({title, woeid}),
       );
+      dispatch({
+        type: 'add_favorite',
+        payload: {title, woeid},
+      });
       if (callback) callback();
     } catch (e) {
       console.log(e);
@@ -49,30 +55,32 @@ const deleteFavorite = dispatch => {
      * @todo PERSISTENCE
      */
     await null;
-    dispatch({ type: "delete_favorite", payload: woeid });
+    dispatch({type: 'delete_favorite', payload: woeid});
   };
 };
 
-// const isFavorite = () => {
-  // return async id => {
-  //   JSON.parse(await AsyncStorage.getItem("@favoriteStore", (error, result) => {
-  //     if (error) {
-  //       console.log(error);
-  //       return false;
-  //     }
-  //     if (result) {
-  //       const res = JSON.parse(result);
-  //       // dispatch({ type: "is_favorite", payload: result })
-  //       console.log(res);
-  //       console.log(res.woeid == id);
-  //       return (res.woeid == id);
-  //     }
-  //   })) == id;
-  // }
+const isFavorite = dispatch => {
+  return async id => {
+    JSON.parse(
+      await AsyncStorage.getItem('@favoriteStore', (error, result) => {
+        if (error) {
+          console.log(error);
+          return false;
+        }
+        if (result) {
+          const res = JSON.parse(result);
+          // dispatch({ type: "is_favorite", payload: result })
+          console.log(res);
+          console.log(res.woeid == id);
+          return res.woeid == id;
+        }
+      }),
+    ) == id;
+  };
+};
 
-
-export const { Context, Provider } = createDataContext(
+export const {Context, Provider} = createDataContext(
   favoritesReducer,
-  { addFavorite, deleteFavorite, getFavorites },
-  []
+  {addFavorite, deleteFavorite, getFavorites, isFavorite},
+  [],
 );

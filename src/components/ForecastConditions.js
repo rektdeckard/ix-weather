@@ -20,7 +20,8 @@ const ForecastConditions = ({ conditions }) => {
         return "Tomorrow";
       }
       const date = moment(condition.applicable_date);
-      return `${date.format("ddd")} ${date.format("D")}`;
+      // return `${date.format("ddd")} ${date.format("D")}`;
+      return `${date.format("ddd D")}`;
     }),
     datasets: [
       {

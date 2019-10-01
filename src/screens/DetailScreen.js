@@ -13,7 +13,7 @@ import CurrentConditions from "../components/CurrentConditions";
 import ForecastConditions from "../components/ForecastConditions";
 import ErrorItem from "../components/ErrorItem";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Context } from "../context/FavoritesContext";
+import { Context as FavoritesContext } from "../context/FavoritesContext";
 
 /**
  * Detail screen for current and forecasted weather of a city
@@ -24,7 +24,7 @@ const DetailScreen = ({ navigation }) => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [favorite, setFavorite] = useState(false);
-  const { state, addFavorite, deleteFavorite } = useContext(Context);
+  const { state, addFavorite, deleteFavorite, isFavorite } = useContext(FavoritesContext);
 
   // Fetch location weather data asynchronously using WOEID
   const getResult = async id => {
@@ -46,6 +46,7 @@ const DetailScreen = ({ navigation }) => {
           <TouchableOpacity
             style={{ padding: 16 }}
             onPress={() => {
+              console.log(id);
               favorite ? deleteFavorite(id) : addFavorite(id);
             }}
           >
@@ -64,8 +65,8 @@ const DetailScreen = ({ navigation }) => {
   useEffect(() => {
     getResult(id);
     // For debugging Favorites feature
-    // addFavorite({ title: "New York", woeid: 2459115 });
-    // getFavorite(id);
+    addFavorite({ title: "New York", woeid: 2459115 });
+    getFavorite(id);
   }, []);
 
   // On error fetching data, display the error
