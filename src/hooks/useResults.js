@@ -35,16 +35,23 @@ export default () => {
 
   // Retrieve the device coordinates make the API call with them
   const getLocationAsync = async () => {
-    // Requests location permission if not already granted
-    Geolocation.getCurrentPosition(info => {
-      let coords = info.coords;
-      setLocation(coords);
-      makeRequest({lattlong: `${coords.latitude},${coords.longitude}`});
-    }, () => {
-      // On permission denied, make a query with default location
-      // setError("Location permission was denied. Try making a search.");
-      makeRequest({ lattlong: '0,0' });
-    });
+    try {
+      // Requests location permission if not already granted
+      Geolocation.getCurrentPosition(
+        info => {
+          let coords = info.coords;
+          setLocation(coords);
+          makeRequest({lattlong: `${coords.latitude},${coords.longitude}`});
+        },
+        () => {
+          // On permission denied, make a query with default location
+          // setError("Location permission was denied. Try making a search.");
+          makeRequest({lattlong: '0,0'});
+        },
+      );
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   // Get device location once when the component is created.

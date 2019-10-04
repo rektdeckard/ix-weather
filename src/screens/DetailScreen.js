@@ -1,30 +1,29 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Linking
-} from "react-native";
-import * as Progress from "react-native-progress";
-import MetaWeather from "../api/MetaWeather";
-import CurrentConditions from "../components/CurrentConditions";
-import ForecastConditions from "../components/ForecastConditions";
-import ErrorItem from "../components/ErrorItem";
+  Linking,
+} from 'react-native';
+import * as Progress from 'react-native-progress';
+import MetaWeather from '../api/MetaWeather';
+import CurrentConditions from '../components/CurrentConditions';
+import ForecastConditions from '../components/ForecastConditions';
+import ErrorItem from '../components/ErrorItem';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Context as FavoritesContext } from "../context/FavoritesContext";
+import {Context as FavoritesContext} from '../context/FavoritesContext';
 
 /**
  * Detail screen for current and forecasted weather of a city
  * @param {NavigationContainer} navigation contains a city title and ID passed as additional params from LocationListScreen
  */
-const DetailScreen = ({ navigation }) => {
-  const id = navigation.getParam("id");
+const DetailScreen = ({navigation}) => {
+  const id = navigation.getParam('id');
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const [favorite, setFavorite] = useState(false);
-  const { state, addFavorite, deleteFavorite, isFavorite } = useContext(FavoritesContext);
+  const {state, addFavorite, deleteFavorite} = useContext(FavoritesContext);
 
   // Fetch location weather data asynchronously using WOEID
   const getResult = async id => {
@@ -36,28 +35,33 @@ const DetailScreen = ({ navigation }) => {
     }
   };
 
-  // console.log(state);
+  const isFavorite = id => {
+    console.log(state);
+    const fav = state.filter(item => item.woeid === id);
+    console.log(fav);
+    return fav ? true : false;
+  };
+
+  console.log(isFavorite(id));
 
   const getFavorite = id => {
     navigation.setParams({
       toolbar: {
-        title: navigation.getParam("title"),
+        title: navigation.getParam('title'),
         headerRight: (
           <TouchableOpacity
-            style={{ padding: 16 }}
+            style={{padding: 16}}
             onPress={() => {
-              console.log(id);
-              favorite ? deleteFavorite(id) : addFavorite(id);
-            }}
-          >
+              isFavorite(id) ? deleteFavorite(id) : addFavorite({ title: result.title, id });
+            }}>
             <Icon
-              name={favorite ? "bookmark" : "bookmark-border"}
+              name={isFavorite(id) ? 'bookmark' : 'bookmark-border'}
               size={30}
               color="white"
             />
           </TouchableOpacity>
-        )
-      }
+        ),
+      },
     });
   };
 
@@ -65,7 +69,7 @@ const DetailScreen = ({ navigation }) => {
   useEffect(() => {
     getResult(id);
     // For debugging Favorites feature
-    addFavorite({ title: "New York", woeid: 2459115 });
+    // deleteFavorite(2459115);
     getFavorite(id);
   }, []);
 
@@ -81,7 +85,7 @@ const DetailScreen = ({ navigation }) => {
         <Progress.Bar
           indeterminate={true}
           useNativeDriver={true}
-          color={"gray"}
+          color={'gray'}
           height={8}
           width={256}
         />
@@ -94,15 +98,13 @@ const DetailScreen = ({ navigation }) => {
       <CurrentConditions conditions={result.consolidated_weather[0]} />
       <ForecastConditions conditions={result.consolidated_weather} />
       <View
-        style={{ flexDirection: "row", justifyContent: "center", margin: 24 }}
-      >
-        <Text style={{ fontSize: 12, color: "gray" }}>
-          Weather data provided by{" "}
+        style={{flexDirection: 'row', justifyContent: 'center', margin: 24}}>
+        <Text style={{fontSize: 12, color: 'gray'}}>
+          Weather data provided by{' '}
         </Text>
         <Text
-          style={{ fontSize: 12, color: "#00697D" }}
-          onPress={() => Linking.openURL("https://www.metaweather.com/")}
-        >
+          style={{fontSize: 12, color: '#00697D'}}
+          onPress={() => Linking.openURL('https://www.metaweather.com/')}>
           MetaWeather
         </Text>
       </View>
@@ -114,16 +116,16 @@ const DetailScreen = ({ navigation }) => {
  * Set the toolbar title to the name of the city, passed as navigation param.
  * Add the 'Bookmark' button to the toolbar.
  */
-DetailScreen.navigationOptions = ({ navigation }) => {
-  const toolbar = navigation.getParam("toolbar");
+DetailScreen.navigationOptions = ({navigation}) => {
+  const toolbar = navigation.getParam('toolbar');
   return (
     toolbar || {
-      title: navigation.getParam("title"),
+      title: navigation.getParam('title'),
       headerRight: (
-        <TouchableOpacity style={{ padding: 16 }}>
+        <TouchableOpacity style={{padding: 16}}>
           <Icon name="bookmark-border" size={30} color="white" />
         </TouchableOpacity>
-      )
+      ),
     }
   );
 };
@@ -131,9 +133,9 @@ DetailScreen.navigationOptions = ({ navigation }) => {
 const styles = StyleSheet.create({
   progress: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  }
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default DetailScreen;

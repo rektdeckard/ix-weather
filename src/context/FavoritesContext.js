@@ -6,7 +6,7 @@ const favoritesReducer = (state, action) => {
     case 'get_favorites':
       return action.payload;
     case 'add_favorite':
-      return [ ...state, action.payload ];
+      return [...state, action.payload];
     case 'delete_favorite':
       return state.filter(favorite => favorite.woeid !== action.payload);
     default:
@@ -19,7 +19,7 @@ const getFavorites = dispatch => {
     try {
       const value = await AsyncStorage.getItem('@favoriteStore');
       if (value !== null) {
-        console.log(JSON.parse(value));
+        console.log(value);
         dispatch({
           type: 'get_favorites',
           payload: JSON.parse(value),
@@ -34,7 +34,7 @@ const getFavorites = dispatch => {
 const addFavorite = dispatch => {
   return async (title, woeid, callback) => {
     try {
-      await AsyncStorage.mergeItem(
+      await AsyncStorage.setItem(
         '@favoriteStore',
         JSON.stringify({title, woeid}),
       );
@@ -59,28 +59,8 @@ const deleteFavorite = dispatch => {
   };
 };
 
-const isFavorite = dispatch => {
-  return async id => {
-    JSON.parse(
-      await AsyncStorage.getItem('@favoriteStore', (error, result) => {
-        if (error) {
-          console.log(error);
-          return false;
-        }
-        if (result) {
-          const res = JSON.parse(result);
-          // dispatch({ type: "is_favorite", payload: result })
-          console.log(res);
-          console.log(res.woeid == id);
-          return res.woeid == id;
-        }
-      }),
-    ) == id;
-  };
-};
-
 export const {Context, Provider} = createDataContext(
   favoritesReducer,
-  {addFavorite, deleteFavorite, getFavorites, isFavorite},
+  {addFavorite, deleteFavorite, getFavorites},
   [],
 );
