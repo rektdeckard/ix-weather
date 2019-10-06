@@ -5,7 +5,7 @@
   "scripts": {
     "start": "react-native start",
     "test": "jest",
-    "run-android": "react-native run-android"
+    "android": "react-native run-android"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.1",

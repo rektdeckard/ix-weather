@@ -70,6 +70,7 @@ const DetailScreen = ({navigation}) => {
     getResult(id);
     // For debugging Favorites feature
     // deleteFavorite(2459115);
+    addFavorite({ title: 'Philadelphia', woeid: 2471217 })
     getFavorite(id);
   }, []);
 

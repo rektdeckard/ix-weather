@@ -1,8 +1,6 @@
 import React from "react";
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-// import { createStore } from 'redux';
-// import { Provider } from 'react-redux';
 import { Provider as FavoritesProvider } from './src/context/FavoritesContext';
 import { Provider as SearchesProvider } from './src/context/SearchesContext';
 import LocationListScreen from './src/screens/LocationListScreen';

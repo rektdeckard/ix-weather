@@ -32,7 +32,7 @@ const getFavorites = dispatch => {
 };
 
 const addFavorite = dispatch => {
-  return async (title, woeid, callback) => {
+  return async ({title, woeid}) => {
     try {
       await AsyncStorage.setItem(
         '@favoriteStore',
@@ -42,7 +42,6 @@ const addFavorite = dispatch => {
         type: 'add_favorite',
         payload: {title, woeid},
       });
-      if (callback) callback();
     } catch (e) {
       console.log(e);
     }
